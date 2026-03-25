@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nuvirta — Del dato al flujo. Del flujo al negocio.</title>
+<meta name="description" content="Consultoría tecnológica especializada en Microsoft Power Platform. Automatización, datos y transformación digital para empresas que quieren avanzar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────── */
+:root {
+  --ink:     #0A0C14;
+  --navy:    #0D1530;
+  --indigo:  #5B4FE8;
+  --teal:    #00BFA5;
+  --ice:     #F0F2FA;
+  --mgray:   #8890aa;
+  --lgray:   #E8EAF4;
+  --white:   #FFFFFF;
+  --mono:    'Space Mono', monospace;
+  --sans:    'Figtree', sans-serif;
+}
+
+/* ─────────────────────────────────────────
+   RESET + BASE
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--white);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ─────────────────────────────────────────
+   UTILITIES
+───────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+.grad-text {
+  background: linear-gradient(90deg, var(--indigo), var(--teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─────────────────────────────────────────
+   NAV
+───────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 20px 0;
+  transition: background .3s, box-shadow .3s;
+}
+nav.scrolled {
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--lgray);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo-name {
+  font-family: var(--mono);
+  font-size: 17px; font-weight: 400;
+  color: var(--ink);
+  transition: color .2s;
+}
+nav.scrolled .nav-logo-name { color: var(--ink); }
+nav:not(.scrolled) .nav-logo-name { color: var(--white); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px; font-weight: 500;
+  color: var(--mgray);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--ink); }
+nav:not(.scrolled) .nav-links a { color: rgba(255,255,255,.6); }
+nav:not(.scrolled) .nav-links a:hover { color: white; }
+
+.nav-cta {
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 400;
+  letter-spacing: .06em;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: 1px solid var(--indigo);
+  color: var(--indigo) !important;
+  transition: background .2s, color .2s !important;
+}
+.nav-cta:hover {
+  background: var(--indigo);
+  color: white !important;
+}
+nav:not(.scrolled) .nav-cta {
+  border-color: rgba(255,255,255,.4);
+  color: white !important;
+}
+nav:not(.scrolled) .nav-cta:hover {
+  background: white;
+  color: var(--indigo) !important;
+}
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  background: var(--ink);
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding: 120px 0 80px;
+}
+
+/* Subtle grid texture */
+#hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(91,79,232,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,79,232,.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* Glow blob */
+#hero::after {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(91,79,232,.18) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  pointer-events: none;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  position: relative; z-index: 1;
+}
+
+.hero-tag {
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 24px;
+  opacity: 0; animation: fadeUp .8s .1s forwards;
+}
+.hero-claim {
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 700; line-height: 1.05;
+  color: white; margin-bottom: 28px;
+  opacity: 0; animation: fadeUp .8s .2s forwards;
+}
+.hero-claim .l2 { color: var(--indigo); }
+.hero-claim .l3 { color: transparent;
+  background: linear-gradient(90deg, var(--indigo), var(--teal));
+  -webkit-background-clip: text; background-clip: text; }
+
+.hero-desc {
+  font-size: 17px; font-weight: 300; line-height: 1.7;
+  color: rgba(255,255,255,.55); margin-bottom: 40px;
+  max-width: 440px;
+  opacity: 0; animation: fadeUp .8s .3s forwards;
+}
+.hero-actions {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .8s .4s forwards;
+}
+.btn-primary {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: .06em;
+  padding: 14px 28px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--indigo), var(--teal));
+  color: white; border: none; cursor: pointer;
+  transition: opacity .2s, transform .2s;
+  display: inline-block;
+}
+.btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+.btn-secondary {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: .06em;
+  padding: 14px 28px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.7);
+  transition: border-color .2s, color .2s;
+  display: inline-block;
+}
+.btn-secondary:hover { border-color: white; color: white; }
+
+/* Hero visual: big symbol -->  */
+.hero-visual {
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; animation: fadeIn 1.2s .5s forwards;
+}
+.hero-symbol-wrap {
+  position: relative;
+  width: 320px; height: 320px;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-symbol-wrap::before {
+  content: '';
+  position: absolute; inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,191,165,.08) 0%, transparent 70%);
+}
+
+/* ─────────────────────────────────────────
+   SCROLL INDICATOR
+───────────────────────────────────────── */
+.scroll-hint {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: fadeIn 1s 1.2s forwards;
+}
+.scroll-hint span {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(255,255,255,.3);
+}
+.scroll-dot {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────
+   SERVICES
+───────────────────────────────────────── */
+#servicios {
+  padding: 120px 0;
+  background: var(--white);
+}
+.section-header {
+  margin-bottom: 64px;
+}
+.section-header .tag { margin-bottom: 14px; display: block; }
+.section-title {
+  font-size: clamp(30px, 3.5vw, 44px);
+  font-weight: 700; line-height: 1.15;
+  color: var(--ink); max-width: 560px;
+}
+.section-title span { color: var(--indigo); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--lgray);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.service-card {
+  background: white;
+  padding: 44px 40px;
+  transition: background .25s;
+  position: relative;
+}
+.service-card:hover { background: var(--ice); }
+.service-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 40px; right: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--indigo), var(--teal));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s;
+}
+.service-card:hover::after { transform: scaleX(1); }
+
+.service-icon {
+  width: 44px; height: 44px; margin-bottom: 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(91,79,232,.1), rgba(0,191,165,.1));
+  display: flex; align-items: center; justify-content: center;
+}
+.service-num {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: .15em; color: var(--teal);
+  margin-bottom: 10px; display: block;
+}
+.service-title {
+  font-size: 19px; font-weight: 700;
+  color: var(--ink); margin-bottom: 10px;
+}
+.service-desc {
+  font-size: 14px; font-weight: 300; line-height: 1.7;
+  color: var(--mgray);
+}
+.service-tags {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px;
+}
+.service-tag {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 4px;
+  background: var(--ice); color: var(--indigo);
+  border: 1px solid var(--lgray);
+}
+
+/* ─────────────────────────────────────────
+   PROCESS
+───────────────────────────────────────── */
+#proceso {
+  padding: 120px 0;
+  background: var(--ink);
+  position: relative; overflow: hidden;
+}
+#proceso::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(91,79,232,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,79,232,.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.process-header { position: relative; z-index: 1; margin-bottom: 80px; }
+.process-header .tag { color: var(--teal); margin-bottom: 14px; display: block; }
+.process-header .section-title { color: white; }
+.process-header .section-title span { color: var(--teal); }
+
+.process-steps {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.process-step {
+  padding: 36px 28px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px;
+  position: relative;
+  transition: background .25s;
+}
+.process-step:hover { background: rgba(91,79,232,.08); }
+.step-num {
+  font-family: var(--mono); font-size: 28px; font-weight: 700;
+  background: linear-gradient(135deg, var(--indigo), var(--teal));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px; display: block;
+}
+.step-title {
+  font-size: 16px; font-weight: 600;
+  color: white; margin-bottom: 10px;
+}
+.step-desc {
+  font-size: 13px; font-weight: 300; line-height: 1.7;
+  color: rgba(255,255,255,.45);
+}
+
+/* ─────────────────────────────────────────
+   WHY
+───────────────────────────────────────── */
+#nosotros {
+  padding: 120px 0;
+  background: var(--ice);
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.why-left .tag { margin-bottom: 14px; display: block; }
+.why-left .section-title { margin-bottom: 20px; }
+.why-lead {
+  font-size: 17px; font-weight: 300; line-height: 1.75;
+  color: var(--mgray); margin-bottom: 40px;
+}
+.why-points { display: flex; flex-direction: column; gap: 20px; }
+.why-point {
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.why-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo), var(--teal));
+  margin-top: 7px; flex-shrink: 0;
+}
+.why-point-text h4 {
+  font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px;
+}
+.why-point-text p {
+  font-size: 13px; font-weight: 300; line-height: 1.65; color: var(--mgray);
+}
+
+.why-right {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.stat-card {
+  background: white; border-radius: 16px;
+  padding: 28px 24px;
+  border: 1px solid var(--lgray);
+  transition: transform .25s, box-shadow .25s;
+}
+.stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(91,79,232,.1); }
+.stat-card:nth-child(2) { margin-top: 24px; }
+.stat-card:nth-child(4) { margin-top: 24px; }
+.stat-num {
+  font-family: var(--mono); font-size: 32px; font-weight: 700;
+  background: linear-gradient(135deg, var(--indigo), var(--teal));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px; display: block;
+}
+.stat-label {
+  font-size: 13px; font-weight: 400; color: var(--mgray); line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────
+   TECH STACK
+───────────────────────────────────────── */
+#stack {
+  padding: 80px 0;
+  background: white;
+  border-top: 1px solid var(--lgray);
+  border-bottom: 1px solid var(--lgray);
+}
+.stack-inner {
+  display: flex; align-items: center; gap: 48px; flex-wrap: wrap;
+}
+.stack-label {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--mgray); white-space: nowrap;
+}
+.stack-items {
+  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+}
+.stack-item {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--mgray); opacity: .7;
+  transition: opacity .2s, color .2s;
+}
+.stack-item:hover { opacity: 1; color: var(--indigo); }
+
+/* ─────────────────────────────────────────
+   CONTACT
+───────────────────────────────────────── */
+#contacto {
+  padding: 120px 0;
+  background: var(--ink);
+  position: relative; overflow: hidden;
+}
+#contacto::before {
+  content: '';
+  position: absolute;
+  width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,191,165,.06) 0%, transparent 70%);
+  bottom: -300px; left: -200px;
+  pointer-events: none;
+}
+.contact-inner {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: start;
+}
+.contact-left .tag { margin-bottom: 14px; display: block; }
+.contact-title {
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700; line-height: 1.15;
+  color: white; margin-bottom: 16px;
+}
+.contact-desc {
+  font-size: 16px; font-weight: 300; line-height: 1.7;
+  color: rgba(255,255,255,.45); margin-bottom: 40px;
+}
+.contact-info { display: flex; flex-direction: column; gap: 14px; }
+.contact-line {
+  display: flex; align-items: center; gap: 12px;
+}
+.contact-line-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal); flex-shrink: 0;
+}
+.contact-line a, .contact-line span {
+  font-size: 14px; font-weight: 400;
+  color: rgba(255,255,255,.55);
+  transition: color .2s;
+}
+.contact-line a:hover { color: var(--teal); }
+
+/* Form */
+.contact-form {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  padding: 13px 16px;
+  font-family: var(--sans); font-size: 14px; font-weight: 300;
+  color: white;
+  transition: border-color .2s, background .2s;
+  outline: none;
+  width: 100%;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: rgba(255,255,255,.25); }
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--indigo);
+  background: rgba(91,79,232,.06);
+}
+.form-group select option { background: var(--ink); }
+.form-group textarea { min-height: 110px; resize: vertical; }
+.form-submit {
+  font-family: var(--mono); font-size: 12px;
+  letter-spacing: .08em;
+  padding: 16px 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--indigo), var(--teal));
+  color: white; border: none; cursor: pointer;
+  transition: opacity .2s, transform .2s;
+  align-self: flex-start;
+}
+.form-submit:hover { opacity: .88; transform: translateY(-1px); }
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer {
+  background: var(--navy);
+  padding: 40px 0;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.footer-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 20px;
+}
+.footer-logo {
+  display: flex; align-items: center; gap: 8px;
+}
+.footer-logo-name {
+  font-family: var(--mono); font-size: 14px; color: rgba(255,255,255,.5);
+}
+.footer-copy {
+  font-size: 12px; color: rgba(255,255,255,.25);
+}
+.footer-links {
+  display: flex; gap: 28px; list-style: none;
+}
+.footer-links a {
+  font-size: 12px; color: rgba(255,255,255,.35);
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--teal); }
+
+/* ─────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: .3; transform: scaleY(1); }
+  50%       { opacity: .8; transform: scaleY(1.1); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.visible {
+  opacity: 1; transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+.reveal-delay-4 { transition-delay: .4s; }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero-inner        { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+  .hero-desc         { margin: 0 auto 32px; }
+  .hero-actions      { justify-content: center; }
+  .hero-visual       { display: none; }
+  .services-grid     { grid-template-columns: 1fr; }
+  .process-steps     { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .why-grid          { grid-template-columns: 1fr; gap: 40px; }
+  .why-right         { display: none; }
+  .contact-inner     { grid-template-columns: 1fr; gap: 48px; }
+  .footer-inner      { flex-direction: column; align-items: flex-start; }
+  .nav-links         { display: none; }
+}
+@media (max-width: 600px) {
+  .container         { padding: 0 20px; }
+  .process-steps     { grid-template-columns: 1fr; }
+  .form-row          { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SVG defs (shared, hidden) -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden">
+<defs>
+  <linearGradient id="sym-g" x1="10%" y1="0%" x2="90%" y2="100%">
+    <stop offset="0%" stop-color="#5B4FE8"/>
+    <stop offset="100%" stop-color="#00BFA5"/>
+  </linearGradient>
+  <radialGradient id="sym-r1" cx="48" cy="88" r="22" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#0A0C14"/>
+    <stop offset="45%" stop-color="#0A0C14" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="white"/>
+  </radialGradient>
+  <radialGradient id="sym-r2" cx="60" cy="32" r="22" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#0A0C14"/>
+    <stop offset="45%" stop-color="#0A0C14" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="white"/>
+  </radialGradient>
+  <radialGradient id="sym-r3" cx="52" cy="20" r="22" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#0A0C14"/>
+    <stop offset="45%" stop-color="#0A0C14" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="white"/>
+  </radialGradient>
+  <radialGradient id="sym-r4" cx="40" cy="76" r="22" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#0A0C14"/>
+    <stop offset="45%" stop-color="#0A0C14" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="white"/>
+  </radialGradient>
+  <mask id="sym-md" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="108">
+    <rect x="0" y="0" width="100" height="108" fill="white"/>
+    <circle cx="48" cy="88" r="22" fill="url(#sym-r1)"/>
+    <circle cx="60" cy="32" r="22" fill="url(#sym-r2)"/>
+    <circle cx="52" cy="20" r="22" fill="url(#sym-r3)"/>
+    <circle cx="40" cy="76" r="22" fill="url(#sym-r4)"/>
+  </mask>
+  <!-- light bg mask -->
+  <radialGradient id="sym-r1l" cx="48" cy="88" r="22" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="white"/>
+    <stop offset="45%" stop-color="white" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="black"/>
+  </radialGradient>
+  <radialGradient id="sym-r2l" cx="60" cy="32" r="22" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="white"/>
+    <stop offset="45%" stop-color="white" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="black"/>
+  </radialGradient>
+  <radialGradient id="sym-r3l" cx="52" cy="20" r="22" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="white"/>
+    <stop offset="45%" stop-color="white" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="black"/>
+  </radialGradient>
+  <radialGradient id="sym-r4l" cx="40" cy="76" r="22" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="white"/>
+    <stop offset="45%" stop-color="white" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="black"/>
+  </radialGradient>
+  <mask id="sym-ml" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="108">
+    <rect x="0" y="0" width="100" height="108" fill="white"/>
+    <circle cx="48" cy="88" r="22" fill="url(#sym-r1l)"/>
+    <circle cx="60" cy="32" r="22" fill="url(#sym-r2l)"/>
+    <circle cx="52" cy="20" r="22" fill="url(#sym-r3l)"/>
+    <circle cx="40" cy="76" r="22" fill="url(#sym-r4l)"/>
+  </mask>
+</defs>
+</svg>
+
+<!-- ══════════════════════════════════
+     NAV
+═══════════════════════════════════════ -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <svg width="28" height="30" viewBox="0 0 100 108" fill="none">
+          <g mask="url(#sym-md)">
+            <path d="M48,88 C28,88 10,75 10,58 C10,41 26,32 40,38 C54,44 56,62 70,66 C84,70 94,60 90,46 C86,32 72,26 60,32" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
+            <path d="M52,20 C72,20 90,33 90,50 C90,67 74,76 60,70 C46,64 44,46 30,42 C16,38 6,48 10,62 C14,76 28,82 40,76" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
+          </g>
+        </svg>
+        <span class="nav-logo-name">nuvirta</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#proceso">Cómo trabajamos</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#contacto" class="nav-cta">Hablemos</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-tag">Technology Consulting · Microsoft Power Platform</div>
+        <h1 class="hero-claim">
+          Del dato<br>
+          <span class="l2">al flujo.</span><br>
+          <span class="l3">Del flujo<br>al negocio.</span>
+        </h1>
+        <p class="hero-desc">
+          Ayudamos a empresas a transformar sus procesos con tecnología que funciona de verdad. Sin fricciones, sin proyectos interminables.
+        </p>
+        <div class="hero-actions">
+          <a href="#contacto" class="btn-primary">Cuéntanos tu reto</a>
+          <a href="#servicios" class="btn-secondary">Ver servicios</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-symbol-wrap">
+          <svg width="260" height="280" viewBox="0 0 100 108" fill="none">
+            <g mask="url(#sym-md)">
+              <path d="M48,88 C28,88 10,75 10,58 C10,41 26,32 40,38 C54,44 56,62 70,66 C84,70 94,60 90,46 C86,32 72,26 60,32" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
+              <path d="M52,20 C72,20 90,33 90,50 C90,67 74,76 60,70 C46,64 44,46 30,42 C16,38 6,48 10,62 C14,76 28,82 40,76" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     STACK RIBBON
+═══════════════════════════════════════ -->
+<div id="stack">
+  <div class="container">
+    <div class="stack-inner">
+      <span class="stack-label">Tecnologías</span>
+      <div class="stack-items">
+        <span class="stack-item">Power Apps</span>
+        <span class="stack-item">Power Automate</span>
+        <span class="stack-item">Dataverse</span>
+        <span class="stack-item">Power BI</span>
+        <span class="stack-item">SharePoint</span>
+        <span class="stack-item">Azure</span>
+        <span class="stack-item">Microsoft 365</span>
+        <span class="stack-item">Copilot Studio</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SERVICIOS
+═══════════════════════════════════════ -->
+<section id="servicios">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="tag">Qué hacemos</span>
+      <h2 class="section-title">Tecnología que <span>trabaja</span> para tu negocio</h2>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-num">01</span>
+        <h3 class="service-title">Automatización de procesos</h3>
+        <p class="service-desc">Eliminamos tareas manuales repetitivas con flujos inteligentes. Desde la generación de documentos hasta la gestión de aprobaciones, cada proceso fluye solo.</p>
+        <div class="service-tags">
+          <span class="service-tag">Power Automate</span>
+          <span class="service-tag">RPA</span>
+          <span class="service-tag">Integraciones</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2">
+        <span class="service-num">02</span>
+        <h3 class="service-title">Aplicaciones a medida</h3>
+        <p class="service-desc">Apps de negocio rápidas y robustas, sin necesidad de desarrollo tradicional. Conectadas a tus datos, adaptadas a tus procesos, fáciles de usar por tu equipo.</p>
+        <div class="service-tags">
+          <span class="service-tag">Power Apps</span>
+          <span class="service-tag">Canvas Apps</span>
+          <span class="service-tag">Model-Driven</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-3">
+        <span class="service-num">03</span>
+        <h3 class="service-title">Gestión de datos y CRM</h3>
+        <p class="service-desc">Centraliza clientes, expedientes y operaciones en una plataforma unificada. Dataverse como base sólida para que todos trabajen con los mismos datos en tiempo real.</p>
+        <div class="service-tags">
+          <span class="service-tag">Dataverse</span>
+          <span class="service-tag">CRM</span>
+          <span class="service-tag">Power BI</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-4">
+        <span class="service-num">04</span>
+        <h3 class="service-title">IA y asistentes digitales</h3>
+        <p class="service-desc">Incorpora inteligencia artificial a tus procesos de forma práctica y segura. Copilots para tu equipo, clasificación automática de documentos, respuestas inteligentes.</p>
+        <div class="service-tags">
+          <span class="service-tag">Copilot Studio</span>
+          <span class="service-tag">AI Builder</span>
+          <span class="service-tag">Azure OpenAI</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     PROCESO
+═══════════════════════════════════════ -->
+<section id="proceso">
+  <div class="container">
+    <div class="process-header reveal">
+      <span class="tag">Cómo trabajamos</span>
+      <h2 class="section-title">Un proceso <span>sin sorpresas</span></h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal reveal-delay-1">
+        <span class="step-num">01</span>
+        <h3 class="step-title">Escuchamos</h3>
+        <p class="step-desc">Entendemos tu negocio antes de proponer nada. Los problemas reales rara vez son lo que parecen al principio.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <span class="step-num">02</span>
+        <h3 class="step-title">Diseñamos</h3>
+        <p class="step-desc">Proponemos una solución concreta, con alcance definido y sin letra pequeña. Sabes exactamente qué vas a obtener.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <span class="step-num">03</span>
+        <h3 class="step-title">Construimos</h3>
+        <p class="step-desc">Desarrollamos en ciclos cortos con feedback continuo. Sin meses de silencio ni entregas sorpresa al final.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-4">
+        <span class="step-num">04</span>
+        <h3 class="step-title">Acompañamos</h3>
+        <p class="step-desc">La transformación no termina en el go-live. Seguimos contigo mientras el negocio evoluciona y los procesos maduran.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     NOSOTROS
+═══════════════════════════════════════ -->
+<section id="nosotros">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-left reveal">
+        <span class="tag">Por qué nuvirta</span>
+        <h2 class="section-title">Expertos en lo que hacemos.<br><span>Sin rodeos.</span></h2>
+        <p class="why-lead">
+          Somos una consultora pequeña a propósito. Eso significa que quien te vende el proyecto es quien lo ejecuta, y quien lo ejecuta lleva años haciéndolo.
+        </p>
+        <div class="why-points">
+          <div class="why-point">
+            <div class="why-dot"></div>
+            <div class="why-point-text">
+              <h4>Especialización real en Power Platform</h4>
+              <p>No somos generalistas. Todo nuestro trabajo gira en torno al stack de Microsoft: Power Apps, Power Automate, Dataverse y Azure.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-dot"></div>
+            <div class="why-point-text">
+              <h4>Criterio de negocio, no solo técnico</h4>
+              <p>Venimos del mundo empresarial. Entendemos lo que necesita un directivo, no solo lo que pide el sistema.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-dot"></div>
+            <div class="why-point-text">
+              <h4>Compromiso de largo plazo</h4>
+              <p>No entregamos proyectos y desaparecemos. Preferimos relaciones de confianza que proyectos de una sola vez.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="why-right">
+        <div class="stat-card reveal reveal-delay-1">
+          <span class="stat-num">+4</span>
+          <span class="stat-label">años transformando procesos con Power Platform</span>
+        </div>
+        <div class="stat-card reveal reveal-delay-2">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">especialización en ecosistema Microsoft</span>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+          <span class="stat-num">0</span>
+          <span class="stat-label">proyectos entregados sin acompañamiento posterior</span>
+        </div>
+        <div class="stat-card reveal reveal-delay-4">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">capacidad de iterar cuando el negocio cambia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     CONTACTO
+═══════════════════════════════════════ -->
+<section id="contacto">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-left reveal">
+        <span class="tag">Hablemos</span>
+        <h2 class="contact-title">¿Tienes un reto<br>tecnológico?</h2>
+        <p class="contact-desc">Cuéntanos dónde está el problema. En 24 horas te decimos si podemos ayudarte y cómo.</p>
+        <div class="contact-info">
+          <div class="contact-line">
+            <div class="contact-line-dot"></div>
+            <a href="mailto:hola@nuvirta.com">hola@nuvirta.com</a>
+          </div>
+          <div class="contact-line">
+            <div class="contact-line-dot"></div>
+            <span>nuvirta.com</span>
+          </div>
+          <div class="contact-line">
+            <div class="contact-line-dot"></div>
+            <span>Madrid, España</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-right reveal reveal-delay-2">
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre</label>
+              <input type="text" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label>Empresa</label>
+              <input type="text" placeholder="Tu empresa">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="tu@empresa.com" required>
+          </div>
+          <div class="form-group">
+            <label>¿Sobre qué quieres hablar?</label>
+            <select>
+              <option value="">Selecciona un tema</option>
+              <option>Automatización de procesos</option>
+              <option>Aplicación a medida</option>
+              <option>CRM / Gestión de datos</option>
+              <option>IA y asistentes digitales</option>
+              <option>No lo tengo claro todavía</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Cuéntanos más</label>
+            <textarea placeholder="Describe brevemente el reto o proceso que quieres mejorar..."></textarea>
+          </div>
+          <button type="submit" class="form-submit">Enviar mensaje →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <svg width="20" height="22" viewBox="0 0 100 108" fill="none">
+          <g mask="url(#sym-md)">
+            <path d="M48,88 C28,88 10,75 10,58 C10,41 26,32 40,38 C54,44 56,62 70,66 C84,70 94,60 90,46 C86,32 72,26 60,32" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
+            <path d="M52,20 C72,20 90,33 90,50 C90,67 74,76 60,70 C46,64 44,46 30,42 C16,38 6,48 10,62 C14,76 28,82 40,76" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
+          </g>
+        </svg>
+        <span class="footer-logo-name">nuvirta</span>
+      </div>
+      <span class="footer-copy">© 2026 nuvirta · Del dato al flujo. Del flujo al negocio.</span>
+      <ul class="footer-links">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#proceso">Proceso</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── NAV scroll effect ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Form submit ──
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = '¡Mensaje enviado! ✓';
+  btn.style.background = 'linear-gradient(135deg, #00BFA5, #5B4FE8)';
+  btn.disabled = true;
+}
+</script>
+</body>
+</html>
