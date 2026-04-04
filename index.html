@@ -636,72 +636,43 @@ footer {
   .process-steps     { grid-template-columns: 1fr; }
   .form-row          { grid-template-columns: 1fr; }
 }
+
+/* ── Logo image sizing ── */
+.nav-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+.footer-logo-img {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+}
+
 </style>
 </head>
 <body>
 
 <!-- SVG defs (shared, hidden) -->
 <svg width="0" height="0" style="position:absolute;overflow:hidden">
-<defs>
-  <linearGradient id="sym-g" x1="10%" y1="0%" x2="90%" y2="100%">
-    <stop offset="0%" stop-color="#5B4FE8"/>
+<defs>  <!-- Fluid n symbol — Fluent Design style -->
+  <linearGradient id="ng" x1="0" y1="0" x2="80" y2="90" gradientUnits="userSpaceOnUse">
+    <stop offset="0%"   stop-color="#5B4FE8"/>
+    <stop offset="55%"  stop-color="#2A7ED4"/>
     <stop offset="100%" stop-color="#00BFA5"/>
   </linearGradient>
-  <radialGradient id="sym-r1" cx="50" cy="88" r="22" gradientUnits="userSpaceOnUse">
-    <stop offset="0%" stop-color="#0A0C14"/>
-    <stop offset="45%" stop-color="#0A0C14" stop-opacity="0.06"/>
-    <stop offset="100%" stop-color="white"/>
-  </radialGradient>
-  <radialGradient id="sym-r2" cx="50" cy="20" r="22" gradientUnits="userSpaceOnUse">
-    <stop offset="0%" stop-color="#0A0C14"/>
-    <stop offset="45%" stop-color="#0A0C14" stop-opacity="0.06"/>
-    <stop offset="100%" stop-color="white"/>
-  </radialGradient>
-  <radialGradient id="sym-r3" cx="50" cy="20" r="22" gradientUnits="userSpaceOnUse">
-    <stop offset="0%" stop-color="#0A0C14"/>
-    <stop offset="45%" stop-color="#0A0C14" stop-opacity="0.06"/>
-    <stop offset="100%" stop-color="white"/>
-  </radialGradient>
-  <radialGradient id="sym-r4" cx="50" cy="88" r="22" gradientUnits="userSpaceOnUse">
-    <stop offset="0%" stop-color="#0A0C14"/>
-    <stop offset="45%" stop-color="#0A0C14" stop-opacity="0.06"/>
-    <stop offset="100%" stop-color="white"/>
-  </radialGradient>
-  <mask id="sym-md" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="108">
-    <rect x="0" y="0" width="100" height="108" fill="white"/>
-    <circle cx="50" cy="88" r="22" fill="url(#sym-r1)"/>
-    <circle cx="50" cy="20" r="22" fill="url(#sym-r2)"/>
-    <circle cx="50" cy="20" r="22" fill="url(#sym-r3)"/>
-    <circle cx="50" cy="88" r="22" fill="url(#sym-r4)"/>
-  </mask>
-  <!-- light bg mask -->
-  <radialGradient id="sym-r1l" cx="50" cy="88" r="22" gradientUnits="userSpaceOnUse">
-    <stop offset="0%" stop-color="white"/>
-    <stop offset="45%" stop-color="white" stop-opacity="0.06"/>
-    <stop offset="100%" stop-color="black"/>
-  </radialGradient>
-  <radialGradient id="sym-r2l" cx="50" cy="20" r="22" gradientUnits="userSpaceOnUse">
-    <stop offset="0%" stop-color="white"/>
-    <stop offset="45%" stop-color="white" stop-opacity="0.06"/>
-    <stop offset="100%" stop-color="black"/>
-  </radialGradient>
-  <radialGradient id="sym-r3l" cx="50" cy="20" r="22" gradientUnits="userSpaceOnUse">
-    <stop offset="0%" stop-color="white"/>
-    <stop offset="45%" stop-color="white" stop-opacity="0.06"/>
-    <stop offset="100%" stop-color="black"/>
-  </radialGradient>
-  <radialGradient id="sym-r4l" cx="50" cy="88" r="22" gradientUnits="userSpaceOnUse">
-    <stop offset="0%" stop-color="white"/>
-    <stop offset="45%" stop-color="white" stop-opacity="0.06"/>
-    <stop offset="100%" stop-color="black"/>
-  </radialGradient>
-  <mask id="sym-ml" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="108">
-    <rect x="0" y="0" width="100" height="108" fill="white"/>
-    <circle cx="50" cy="88" r="22" fill="url(#sym-r1l)"/>
-    <circle cx="50" cy="20" r="22" fill="url(#sym-r2l)"/>
-    <circle cx="50" cy="20" r="22" fill="url(#sym-r3l)"/>
-    <circle cx="50" cy="88" r="22" fill="url(#sym-r4l)"/>
-  </mask>
+  <linearGradient id="ng-hi" x1="0" y1="0" x2="50" y2="50" gradientUnits="userSpaceOnUse">
+    <stop offset="0%"   stop-color="white" stop-opacity="0.45"/>
+    <stop offset="100%" stop-color="white" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="ng-sh" x1="30" y1="30" x2="80" y2="90" gradientUnits="userSpaceOnUse">
+    <stop offset="0%"   stop-color="#001030" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#001030" stop-opacity="0.35"/>
+  </linearGradient>
+  <linearGradient id="ng-arch" x1="20" y1="5" x2="70" y2="45" gradientUnits="userSpaceOnUse">
+    <stop offset="0%"   stop-color="white" stop-opacity="0.35"/>
+    <stop offset="100%" stop-color="white" stop-opacity="0"/>
+  </linearGradient>
 </defs>
 </svg>
 
@@ -712,12 +683,7 @@ footer {
   <div class="container">
     <div class="nav-inner">
       <a href="#" class="nav-logo">
-        <svg width="28" height="30" viewBox="0 0 100 108" fill="none">
-          <g>
-            <path d="M50,88 C28,88 10,75 10,58 C10,41 26,32 40,38 C54,44 56,62 70,66 C84,70 94,60 90,46 C86,32 72,26 50,20" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
-            <path d="M50,20 C72,20 90,33 90,50 C90,67 74,76 60,70 C46,64 44,46 30,42 C16,38 6,48 10,62 C14,76 28,82 50,88" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
-          </g>
-        </svg>
+        <img src="nuvirta-logo-horizontal.png" alt="nuvirta" class="nav-logo-img">
         <span class="nav-logo-name">nuvirta</span>
       </a>
       <ul class="nav-links">
@@ -753,12 +719,7 @@ footer {
       </div>
       <div class="hero-visual">
         <div class="hero-symbol-wrap">
-          <svg width="260" height="280" viewBox="0 0 100 108" fill="none">
-            <g>
-              <path d="M50,88 C28,88 10,75 10,58 C10,41 26,32 40,38 C54,44 56,62 70,66 C84,70 94,60 90,46 C86,32 72,26 50,20" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
-              <path d="M50,20 C72,20 90,33 90,50 C90,67 74,76 60,70 C46,64 44,46 30,42 C16,38 6,48 10,62 C14,76 28,82 50,88" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
-            </g>
-          </svg>
+          <img src="nuvirta-logo.png" alt="nuvirta symbol" style="width:260px;height:260px;object-fit:contain;">
         </div>
       </div>
     </div>
@@ -1027,12 +988,7 @@ footer {
   <div class="container">
     <div class="footer-inner">
       <div class="footer-logo">
-        <svg width="20" height="22" viewBox="0 0 100 108" fill="none">
-          <g>
-            <path d="M50,88 C28,88 10,75 10,58 C10,41 26,32 40,38 C54,44 56,62 70,66 C84,70 94,60 90,46 C86,32 72,26 50,20" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
-            <path d="M50,20 C72,20 90,33 90,50 C90,67 74,76 60,70 C46,64 44,46 30,42 C16,38 6,48 10,62 C14,76 28,82 50,88" stroke="url(#sym-g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
-          </g>
-        </svg>
+      <img src="nuvirta-logo-horizontal.png" alt="nuvirta" class="footer-logo-img">
         <span class="footer-logo-name">nuvirta</span>
       </div>
       <span class="footer-copy">© 2026 nuvirta · Del dato al flujo. Del flujo al negocio.</span>
