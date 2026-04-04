@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="640" height="160" style="background:#0A0C14">
+  <defs>
+    <linearGradient id="g" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#5B4FE8"/>
+      <stop offset="100%" stop-color="#00BFA5"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(10, 7.5) scale(0.555)">
+    <path d="M50,88 C28,88 10,75 10,58 C10,41 26,32 40,38 C54,44 56,62 70,66 C84,70 94,60 90,46 C86,32 72,26 50,20"
+      stroke="url(#g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
+    <path d="M50,20 C72,20 90,33 90,50 C90,67 74,76 60,70 C46,64 44,46 30,42 C16,38 6,48 10,62 C14,76 28,82 50,88"
+      stroke="url(#g)" stroke-width="17" stroke-linecap="butt" fill="none"/>
+  </g>
+  <text x="75" y="50"
+    font-family="'Inconsolata', 'DejaVu Sans Mono', monospace"
+    font-weight="400" font-size="38" fill="#FFFFFF"
+    dominant-baseline="middle">nuvirta</text>
+</svg>
