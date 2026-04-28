@@ -992,7 +992,7 @@ nav.scrolled .nav-logo-light { display: none; }
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── NAV scroll effect ──
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
@@ -1014,35 +1014,28 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // ── Form submit — mailto ──
 function handleSubmit(e) {
   e.preventDefault();
-  const f = e.target;
-  const nombre  = f.querySelector('#nombre').value;
-  const empresa = f.querySelector('#empresa').value;
-  const email   = f.querySelector('#email').value;
-  const tema    = f.querySelector('#tema').value;
-  const mensaje = f.querySelector('#mensaje').value;
+  var nombre  = document.getElementById('nombre').value;
+  var empresa = document.getElementById('empresa').value;
+  var email   = document.getElementById('email').value;
+  var tema    = document.getElementById('tema').value;
+  var mensaje = document.getElementById('mensaje').value;
 
-  const subject = encodeURIComponent('Contacto web: ' + (tema || 'Consulta general'));
-  const body = encodeURIComponent(
-    'Nombre: ' + nombre + '
-' +
-    'Empresa: ' + empresa + '
-' +
-    'Email: ' + email + '
-' +
-    'Tema: ' + tema + '
-
-' +
-    'Mensaje:
-' + mensaje
+  var subject = encodeURIComponent('Contacto web: ' + (tema || 'Consulta general'));
+  var body = encodeURIComponent(
+    'Nombre: ' + nombre + '\n' +
+    'Empresa: ' + empresa + '\n' +
+    'Email: ' + email + '\n' +
+    'Tema: ' + tema + '\n\n' +
+    'Mensaje:\n' + mensaje
   );
 
   window.location.href = 'mailto:hola@nuvirta.com?subject=' + subject + '&body=' + body;
 
-  const btn = f.querySelector('.form-submit');
-  btn.textContent = '¡Abriendo tu cliente de correo! ✓';
+  var btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Abriendo tu cliente de correo...';
   btn.style.background = 'linear-gradient(135deg, #00BFA5, #5B4FE8)';
+  btn.disabled = true;
 }
-
 </script>
 </body>
 </html>
